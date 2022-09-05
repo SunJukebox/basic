@@ -1,0 +1,604 @@
+\documentclass{article}
+\input{~/.local/share/tex/preamble.tex}
+
+\usepackage[margin=1in]{geometry}
+\linespread{1.3}
+\pagestyle{headings}
+
+% \input{~/Tex/bibtexref}
+% \input{~/Tex/preamble_ref}
+
+\title{Basic Exam, Linear Algebra}
+
+\begin{document}
+
+\maketitle
+
+\begin{problem}
+Let \(A\in M_n(\mathbb{C})\;[M_n(\mathbb{R})]\) be a normal (self-adjoint)
+matrix. Prove that there exists an orthonormal basis of \(\mathbb{C}^n\;
+[\mathbb{R}^n]\) such that the matrix of \(A\) is diagonal with respect to this
+basis.
+\end{problem}
+
+\begin{proof}\leavevmode
+	\begin{description}
+		\item[Real Case.] Let \(V\) be an \(n\)-dimensional inner product space
+			over \(\mathbb{F}\).  For now, we take \(\mathbb{F} = \mathbb{C}\) in
+			order to show the existence of an eigenvalue.  Later, we shall show that
+			the characteristic polynomial of \(T\) splits over \(\mathbb{R}\), so we
+			can take \(\mathbb{F} = \mathbb{R}\).
+
+			% We want show that, for each self-adjoint operator \(T:V\to V\), there
+			% exists an orthonormal basis for \(V\) consisting of only eigenvectors of
+			% \(T\).  To show this, we proceed by induction on \(n\coloneqq  \dim V\).
+			% The case when \(n=1\) is trivial.  Now, let \(n\in \mathbb{N}\) be \(\geq
+			% 2\), and suppose the statement holds up to \(n-1\).
+			First, we will show that each eigenvalue of \(T\) is real.  Note that we
+			assumes the existence of a complex eigenvalue, which follows from
+			applying the Fundamental Theorem of Algebra to the characteristic
+			polynomial of \(T\).
+			\begin{lemma}\label{lem:real_eigenvalue}
+				Let \(V \neq \{0\}\) be a real inner product space and \(T\) be a
+				self-adjoint operator over \(V\).  Then each eigenvalue of \(T\) is
+				real, and the eigenvectors of \(T\) associated to distinct eigenvalues
+				are orthogonal.
+			\end{lemma}
+			\begin{proof}
+				Let \(\lambda\in \mathbb{C}\) be such that \(T v = \lambda v\) for some
+				\(v\in V\).  Then
+				\begin{align*}
+					\lambda\langle v, v \rangle & = \langle \lambda v, v \rangle            \\
+					                            & = \langle T v , v \rangle                 \\
+					                            & = \langle v, T^* v \rangle                \\
+					                            & = \langle v, T v \rangle                  \\
+					                            & = \langle v, \lambda v \rangle            \\
+					                            & = \overline{\lambda} \langle v, v \rangle
+					.\end{align*}
+				Because \(\langle v, v\rangle\neq 0\), \(\lambda = \overline{\lambda}\)
+				and \(\lambda\in \mathbb{R}\).
+
+				Next, let \(u, v\in V\) be eigenvectors associated with distinct
+				eigenvalues \(\alpha, \beta\in \mathbb{R}\) respectively.  Then
+				\begin{align*}
+					\alpha \langle u, v \rangle & = \langle T u, v \rangle                                                                   \\
+					                            & = \langle u, T v \rangle                                                                   \\
+					                            & = \beta \langle u, v \rangle &  & \text{ \(\beta\in \mathbb{R}\) by what we showed above.}
+					.\end{align*}
+				Since \(\alpha \neq \beta\) by assumption, \(\langle u, v\rangle = 0\)
+				and so they're orthogonal.
+			\end{proof}
+
+			We also will use the following lemma regarding the invariance of
+			orthogonal complements.
+
+			\begin{lemma}\label{lem:ortho_invariant}
+				Let \(V\) be an inner product space and \(T\) be a self-adjoint
+				operator over \(V\).  Let \(W\) be a subspace of \(V\) that is
+				invariant under \(T\).  Then,
+				\begin{enumerate}
+					\item \(W^{\perp}\) is invariant under \(T\).
+					\item \(T|_{W}\) and \(T|_{W^{\perp}}\) are self-adjoint operators.
+				\end{enumerate}
+			\end{lemma}
+			\begin{proof}\leavevmode
+				\begin{enumerate}
+					\item Let \(w\in W\) and \(z\in W^{\perp}\).  Since \(W\) is
+					      \(T\)-invariant and \(T\) is self-adjoint, we know that
+					      \[
+						      0 = \langle Tw, z \rangle = \langle w, Tz \rangle
+						      .\]
+					      Hence, \(Tz\in W^{\perp}\) by definition, and \(W^{\perp}\) is
+					      \(T\)-invariant.
+					\item Let \(T_1 = T|_W\) and \(T_2 = T|_{W^{\perp}}\).  For \(x, y\in W\), we
+					      see that
+					      \[
+						      \langle T_1x, y \rangle = \langle Tx, y \rangle = \langle x, Ty
+						      \rangle = \langle x, T_1y \rangle
+					      \]
+					      because \(T = T^*\).  The argument in the proof for \(W^{\perp}\) is
+					      identical.\qedhere
+				\end{enumerate}
+			\end{proof}
+
+			Now, we continue to the proof of the main theorem.  Let \(\beta = \{e_1,
+			e_2, \ldots, e_n\}\) be an orthonormal basis in \(V\).  By
+			Lemma~\ref{lem:real_eigenvalue}, \(T\) has a eigenvalue \(\lambda_1\in
+			\mathbb{R}\).  Let \(E_{\lambda_1} = \{v\in V : Tv = \lambda_1 v\}\) be the
+			\(\lambda_1\)-eigenspace of \(T\).  Because \(\lambda_1\) is an eigenvalue,
+			\(\dim\, (E_{\lambda})^{\perp} < \dim V\).  As
+			\(T|_{(E_{\lambda_1})^{\perp}}\) is self-adjoint, we are justified in
+			establishing an induction on \(n \coloneqq \dim V\) regarding the decomposition of
+			\(V\) in terms of its eigenspaces.  The case \(n = 1\) is trivial.
+			Supposing that the statement is true up to \(n-1\), we can show that it
+			holds for \(n\) since \(V = E_{\lambda_1} \oplus
+			(E_{\lambda_1})^{\perp}\).  Thus, \(V = E_{\lambda_1} \oplus E_{\lambda_2}
+			\oplus \cdots \oplus E_{\lambda_k}\) where \(E_{\lambda_i}\) is the
+			\(\lambda_i\)-eigenspace with respect to \(T\).  Now, if \(v\) is an
+			eigenvector of \(T\) with eigenvalue \(\lambda'\), then \(\lambda' =
+			\lambda_i\) for some \(1\leq i\leq k\) and \(v\in E_{\lambda_i}\) or
+			\(\lambda' \neq \lambda_i\) for each \(1\leq i\leq k\) and \(v\) is
+			orthogonal to each vector in \(V = E_{\lambda_1} \oplus E_{\lambda_2}
+			\oplus \cdots \oplus E_{\lambda_k}\); it follows that \(v = 0\).
+			Choosing an orthonormal basis for each \(E_{\lambda_i}\) an taking their
+			union forms an orthonormal basis for \(V\) consisting of eigenvectors of
+			\(T\).
+
+			% If \(W = V\), then \(T = \lambda\,
+			% \mathrm{id}\) and \(\beta\) is an orthonormal basis for \(V\) consisting of
+			% eigenvectors of \(T\).  So, assume \(W\subset V\).  By the inductive
+			% hypothesis, since \(T|_{W^{\perp}}\) is self-adjoint, we can find an
+			% orthogonal basis \(\Gamma = \{u_1, u_2, \ldots, u_k\}\) for \(W^{\perp}\)
+			% consisting of eigenvectors of \(T\).  Choose an orthonormal basis for
+			% \(W\), say \(\Delta = \{w_1, \ldots, w_m\}\) for \(W\) (we are guaranteed
+			% that the basis consists of eigenvectors of \(T\)).  Because
+			% \(V = W\oplus W^{\perp}\), \(\Delta\cup \Gamma = \{w_1, w_2, \ldots, w_m,
+			% u_1, u_2, \ldots, u_k\}\) is an orthonormal basis for \(V\) consisting of
+			% eigenvectors of \(T\).
+
+			Define the self-adjoint operator \(T(v) \coloneqq Av\) for \(v\in
+			\mathbb{R}^n\).  By what we showed above, there is an orthonormal basis
+			\(\Pi\) for \(\mathbb{R}^n\) consisting of only eigenvectors of
+			\(T\). Letting \(\Sigma\) denote the standard basis in \(\mathbb{R}^n\),
+			we see that \(D = \begin{pmatrix} T \\ \Pi \Pi \end{pmatrix}\) is
+			diagonal and equal to
+			\[
+				\begin{pmatrix} I \\ \Pi \Sigma \end{pmatrix} \begin{pmatrix} T \\
+					\Sigma \Sigma\end{pmatrix} \begin{pmatrix} I \\ \Sigma \Pi
+				\end{pmatrix} = C^{-1} A C
+				.\]
+		\item[Complex Case.]  Let \(V\) be a finite-dimensional inner product space
+			over \(\mathbb{F} = \mathbb{C}\) and \(T:V\to V\) be normal.  We shall
+			show that there exists an orthonormal basis for \(V\) consisting of
+			eigenvectors of \(T\).  We begin with the following lemma.
+			\begin{lemma}\label{lem:simul_spectral}
+				Let \(V\) be a finite-dimensional inner product space, and let \(L_1,
+				L_2, \ldots, L_n\) be self-adjoint operators on \(V\) such that \(L_i
+				L_j = L_j L_i\) for \(1\leq i, j\leq n\).  Then there exists an
+				orthonormal basis for \(V\) of simultaneous eigenvectors of \(L_1, L_2,
+				\ldots, L_n\).
+			\end{lemma}
+			\begin{proof}
+				Let \(E_{\lambda_1, \ldots, \lambda_n} \coloneqq \{v\in V : L_i(v) =
+				\lambda_i v \text{ for } 1\leq i\leq n\}\).  Let \(\{E_{\lambda_1}\}\)
+				be the collection of vector subspaces produced by the Spectral Theorem
+				when applied to \(L_1\).  By commutativity,
+				\[
+					L_1(L_i(v)) = L_i(L_1(v)) = L_i(\lambda_1 v) = \lambda_1 L_i(v)
+				\]
+				for \(v\in E_{\lambda_1}\), so \(L_i(v)\subseteq E_{\lambda_1}\).  So,
+				the restrictions of \(L_1, \ldots, L_n\) to \(E_{\lambda_1}\) are
+				self-adjoint and commute. Let \(\{E_{\lambda_1, \lambda_2}\}\) be the
+				collection of vector subspaces produced by the Spectral Theorem when
+				applied to \(L_2|_{E_{\lambda_1}}\). Again, we see that the
+				restrictions of \(L_3, \ldots, L_n\) to \(E_{\lambda_1, \lambda_2}\)
+				are self-adjoint and commute.  If we continue this process, we shall
+				obtain the desired decomposition of \(V\) as a direct sum of the
+				\(E_{\lambda_1,\ldots, \lambda_n}\)'s.  Choosing an orthonormal basis
+				for each of the \(E_{\lambda_1,\ldots, \lambda_n}\)'s and taking their
+				union gives an orthonormal basis for \(V\) consisting of simultaneous eigenvectors
+				of \(L_1, L_2, \ldots, L_n\).
+			\end{proof}
+
+			Continuing with the main proof, we see that
+			\[
+				T = \frac{1}{2}\left( T + T^* \right) + i\left( \frac{1}{2i}\left( T -
+					T^*\right) \right)
+				.\]
+			It's immediate that \(T_1 = \frac{1}{2}\left( T + T^* \right)\)	and \(T_2
+			= \frac{1}{2i}\left( T - T^*\right)\) are self-adjoint.  Moreover,
+			because \(T\) is normal, \(T_1\) and \(T_2\) commute with each other.
+			Therefore, by Lemma~\ref{lem:simul_spectral}, we can decompose \(V\) as a
+			direct sum of \(E_{\alpha,\beta}\)'s.  Each \(E_{\alpha,\beta}\) in
+			Lemma~\ref{lem:simul_spectral} corresponds to a vector space
+			\(E_{\alpha+i\beta} = \{v\in V : Tv = (\alpha + i\beta)v\}\).  Choosing
+			an orthonormal basis for each \(E_{\alpha+i\beta}\) and taking their
+			union produces an orthonormal basis for \(V\) of eigenvectors of \(T\).
+
+			Using an analogous argument to the one presented in the real case, we
+			obtain the desired result as a direct application of what we have proved
+			above.\qedhere
+	\end{description}
+\end{proof}
+
+\begin{problem}
+Let \(V\) be a complex (real) inner product space and let
+\(\{T_\lambda\}_\lambda\) be a collection (or two) normal (self-adjoint)
+operators. If \(\{T_\lambda\}_\lambda\) pairwise commute, prove that there
+exists an orthonormal basis for \(V\) consisting of vectors that are
+simultaneously eigenvectors of each \(T_\lambda\).
+\end{problem}
+\begin{proof}\leavevmode
+	\begin{description}
+		\item[Real Case.]  Suppose \(V\) is an inner product space over
+			\(\mathbb{F} = \mathbb{R}\) and \(T_\lambda\) is self-adjoint for each
+			\(\lambda\).  Let \(T_1\in \{T_\lambda\}_\lambda\).  Let \(\mu_1, \ldots,
+			\mu_n\in \mathbb{R}\) be the eigenvalues of \(T_1\), and \(E_{\mu_i} =
+			\{v\in V : T_1 v = \mu_i v\}\) for \(1\leq i\leq n\) be the
+			\(\mu_i\)-eigenspace.  Since \(T_1\) is self-adjoint, \(V =
+			\bigoplus_{i=1}^n E_{\mu_i}\) (the \(E_{\mu_i}\) are mutually
+			orthogonal).  Now, let \(T_2\in \{T_\lambda\}_\lambda\) be such that
+			\(T_2\neq T_1\).  Since \(T_1, T_2\) commute, we have that
+			\[
+				T_1 (T_2 v) = T_2 (T_1 v) = T_2 (\mu_i v) = \mu T_2 v
+			\]
+			for \(1\leq i\leq n\), \(v\in E_{\mu_i}\).  Hence, \(T_2(v)\in E_{\mu_i}\),
+			and \(T_2|_{E_{\mu_i}}\) is self-adjoint by
+			Lemma~\ref{lem:ortho_invariant}.  We can again apply the spectral theorem
+			to \(T_2|_{E_{\mu_i}}\) to obtain a decomposition of \(V\) into
+			(simultaneous) \((\mu_i, \nu_j)\)-eigenspaces, where \(\nu_1, \ldots,
+			\nu_m\in \mathbb{R}\) are the eigenvalues of \(T_2\).  Continuing in this
+			fashion, we obtain a decomposition of \(V\) into (simultaneous)
+			\(\left(\bigcup_{\lambda} \mu^{(\lambda)}\right)\)-eigenspaces, where
+			\(\mu^{(\lambda)}\) are the eigenvalues of \(T_\lambda\).  Choosing an
+			orthonormal basis for each of these simultaneous eigenspaces and taking
+			their union, we obtain an orthonormal basis for \(V\) of simultaneous
+			eigenvectors of \(\{T_\lambda\}_\lambda\).
+		\item[Complex Case.]  Suppose \(V\) is an inner product space over
+			\(\mathbb{F} = \mathbb{C}\) and \(T_\lambda\) is normal for each
+			\(\lambda\).  For each \(\lambda\), we know that
+			\[
+				T_\lambda = \frac{1}{2}(T_\lambda+(T_\lambda)^*) + i \left( \frac{1}{2i} \left(T_\lambda-(T_\lambda)^*\right) \right)
+				.\]
+			Since \(T_\lambda (T_\lambda)^* = (T_\lambda)^* T_\lambda\), \(A =
+			\frac{1}{2}(T_\lambda+(T_\lambda)^*)\) and \(B =
+			\frac{1}{2i}\left(T_\lambda-(T_\lambda)^*\right)\) commute. Moreover,
+			\(A\) and \(B\) are self-adjoint.  Appealing to the real case, we see
+			that \(V\) can be decomposed into the direct sum of the
+			\(E_{\alpha, \beta}\)'s, i.e. the simultaneous eigenspaces corresponding
+			to \(A\) and \(B\).
+	\end{description}
+\end{proof}
+
+\begin{problem}
+Let \(A\) be a real \(m\times n\) matrix. Prove that the maximal number of
+linearly independent rows of  \(A\) is equal to the maximum number of linearly
+independent columns of  \(A\).
+\end{problem}
+\begin{proof}\leavevmode
+	\begin{lemma}\label{lem:elem_row_span}
+		If \(A\in M_{mn}(\mathbb{F})\), then any elementary row
+		operation preserves the range of \(A\).
+	\end{lemma}
+	\begin{proof}
+		Denote by \(r_1, r_2, \ldots, r_k\) the rows of \(A\).  Their span is not
+		affected by interchanging them or multiplying any one of them by a scalar.
+		So, suppose we replace row \(r_i\) with \(r_i + c r_j\) for some \(j\neq
+		i\).  Since
+		\[
+			a_i r_i + a_j r_j = a_i (r_i + c r_j) + (a_j - c)r_j
+		\]
+		for \(a_i, a_j\in \mathbb{F}\), the span remains unchanged still.
+	\end{proof}
+	\begin{lemma}\label{lem:row-space_null_rref}
+		If \(A\in M_{mn}(\mathbb{F})\) has a reduced row-echelon form \(R\), then
+		\begin{align}
+			\dim (\operatorname{row space} A) & = \dim (\operatorname{row space} R) \label{eq:range_A_R}        \\
+			                                  & = \# (\text{nonzero rows in } R) \label{eq:range_R_nz-rows}     \\
+			                                  & = \# (\text{corner variables of } R) \label{eq:nz-rows_corner},
+		\end{align}
+		and
+		\begin{align}
+			\dim (\operatorname{null} A) & = \dim (\operatorname{null} R) \label{eq:null_A_R}                \\
+			                             & = \# (\text{independent variables of } R) \label{eq:null_R_indep}
+			.\end{align}
+	\end{lemma}
+	\begin{proof}
+		(\ref{eq:range_A_R}) follows from Lemma~\ref{lem:elem_row_span}.  Next, to
+		demonstrate (\ref{eq:range_R_nz-rows}), we need to show that the nonzero
+		rows are linearly independent. Let \(r_1, r_2, \ldots, r_k\) denote these
+		rows.  Suppose that \(0 = c_1 r_1 + \cdots + c_k r_k\) for some \(c_1,
+		\ldots, c_k\in \mathbb{F}\).  By the definition of reduced row-echelon
+		form, each \(r_i\) contains an entry such that the first nonzero entry is
+		\(1\) and the entries along that column are \(0\) everywhere else.
+		Examining this entry for each row shows that \(c_1 = \cdots = c_k = 0\).
+		(\ref{eq:nz-rows_corner}) is trivial.
+
+		(\ref{eq:null_A_R}) holds because elementary row operations preserve the
+		solution set of a system of linear equations; each elementary row operation
+		is invertible via one of the same type.  To show that
+		(\ref{eq:null_R_indep}) holdes, recall that the solutions take the form of
+		a linear combination of some vector with the independent variables as
+		coefficients.  So, we need to show that these vectors form a basis for the
+		space of solutions.  We shall show that these are linearly independent.
+		Denote the independent variables by \(x_j\)'s and their respective vector
+		by \(v_j\)'s.  The \(j\)th entry of \(v_j\) is \(1\) and all other vectors
+		have \(0\) as the \(j\)th entry.  Therefore, by examining the \(j\)th
+		entry, we see that the \(j\)th coefficient in a linear combination of the
+		vectors that equals \(0\) must be \(0\).
+	\end{proof}
+	\begin{lemma}\label{lem:row-space_nullity}
+		If \(A\in M_{mn}(\mathbb{F})\), then
+		\[
+			n = \dim (\operatorname{row\;space} A) + \dim (\operatorname{null} A)
+			.\]
+	\end{lemma}
+	\begin{proof}
+		This follows from Lemma~\ref{lem:row-space_null_rref} since
+		\[
+			n = \# (\text{corner variables of } R) + \# (\text{independent variables of } R)
+		\]
+		where \(R\) is the reduced row-echelon form of \(A\).
+	\end{proof}
+	Finally, we get the desired result by comparing
+	Lemma~\ref{lem:row-space_nullity} with the Rank-Nullity Theorem.
+	\begin{align*}
+		n & = \dim (\operatorname{row\;space} A) + \dim (\operatorname{null} A)    \\
+		  & = \dim (\operatorname{column\;space} A) + \dim (\operatorname{null} A)
+	\end{align*}
+\end{proof}
+\begin{proof}[Alternative Proof]
+	Let \(T:\mathbb{F}^m\to \mathbb{F}^n\) be defined by \(Tx \coloneqq Ax\) for
+	each \(x\in \mathbb{F}^m\).  Then \(\mathcal{M}(T) = A\), where
+	\(\mathcal{M}(T)\) is the matrix representation of \(T\) with respect to the
+	standard bases of \(\mathbb{F}^m\) and \(\mathbb{F}^n\).  First, we will show
+	that \(\dim (\operatorname{range} T) = \dim (\operatorname{column\;space}
+	\mathcal{M}(T))\).
+	\begin{lemma}
+		Suppose \(V, W\) are finite-dimensional vector spaces and \(T\in
+		\mathcal{L}(V,W)\).  Then
+		\[
+			\dim (\operatorname{range} T) = \dim (\operatorname{column\;space}
+			\mathcal{M}(T))
+			.\]
+	\end{lemma}
+	\begin{proof}
+		Let \(v_1, v_2, \ldots, v_n\) form a basis for \(V\) and \(w_1, w_2,
+		\ldots, w_m\) form one for \(W\).  The function that takes \(w\in
+		\operatorname{span}(Tv_1, \ldots, Tv_n)\) to \(\mathcal{M}(w)\) is an
+		isomorphism from \(\operatorname{span}(Tv_1, \ldots, Tv_n)\) to
+		\(\operatorname{span}(\mathcal{M}(Tv_1), \ldots, \mathcal{M}(Tv_n))\).
+		% Indeed, the inverse is defined by taking the entries of \(\mathcal{M}(w)\)
+		% to be the coefficients in front of the basis vectors corresponding to each
+		% row.
+		Therefore,
+		\begin{align*}
+			\dim \operatorname{span}(Tv_1, \ldots, Tv_n) & = \dim \operatorname{span}(\mathcal{M}(Tv_1), \ldots, \mathcal{M}(Tv_n)) \\
+			                                             & = \dim (\operatorname{column\;space} \mathcal{M}(T))
+			.\end{align*}
+		Finally, \(\operatorname{range} T = \operatorname{span}(Tv_1, \ldots,
+		Tv_n)\) because
+		\[
+			a_1 Tv_1 + \cdots + a_n Tv_n = T (a_1v_1 + \cdots + a_nv_n) = T(v)
+			,\]
+		where \(v = a_1v_1 + \cdots + a_nv_n\) for some \(a_1, \ldots, a_n\in
+		\mathbb{F}\).  Thus,
+		\[
+			\dim (\operatorname{range} T) = \dim (\operatorname{column\;space}
+			\mathcal{M}(T))
+			.\qedhere\]
+	\end{proof}
+
+	Now,
+	\begin{align*}
+		\dim (\operatorname{column\;space} A) & = \dim (\operatorname{column\;space} M(T))      \\
+		                                      & = \dim (\operatorname{range} T)                 \\
+		                                      & = \dim (\operatorname{range} T')                \\
+		                                      & = \dim (\operatorname{column\;space}\; [M(T)]') \\
+		                                      & = \dim (\operatorname{column\;space} A')        \\
+		                                      & = \dim (\operatorname{row\;space} A)
+		.\end{align*}
+\end{proof}
+
+\begin{problem}
+Let \(A\) be an \(m\times n\) real matrix and let \(b\in \mathbb{R}^m\).
+Suppose \(Ax\) and \(Ay\) are both minimal distance to \(b\) (minimizing among
+members of \(\operatorname{im} A\)). Prove \(x-y\in \ker A\).
+\end{problem}
+\begin{proof}
+	By the assumption, \(\left\lVert Ax-b \right\lVert = \left\lVert Ay-b
+	\right\lVert\).  We know that
+	\begin{align*}
+		\left\lVert A\left(\frac{x+y}{2}\right) - b \right\lVert & \leq \left\lVert
+		A\left(\frac{x}{2}\right) - \frac{b}{2}\right\lVert + \left\lVert A\left(
+		\frac{y}{2}\right) - \frac{b}{2}\right\lVert                                                                                               \\
+		                                                         & = \frac{1}{2} (\left\lVert Ax - b\right\lVert + \left\lVert Ay - b\right\lVert) \\
+		                                                         & = \left\lVert Ax-b \right\lVert
+		.\end{align*}
+	Thus, \(\left\lVert A\left(\frac{x+y}{2}\right) - b \right\lVert =
+	\left\lVert Ax-b \right\lVert = \left\lVert Ay-b \right\lVert\).  Assume,
+	to the contrary, that \(x-y\notin \operatorname{null} A\) so that
+	\(Ax\neq Ay\).  Then \(Ax \neq b\), \(Ay \neq b\), and
+	\(A\left(\frac{x+y}{2}\right) \neq b\).  The triangles defined by the points
+	\(\left\{Ax, A\left(\frac{x+y}{2}\right), b\right\}\), \(\left\{Ay,
+	A\left(\frac{x+y}{2}\right), b\right\}\), and \(\left\{ Ax, Ay, b \right\}\)
+	are isosceles.  The first two triangles are similar to each other, and so the
+	angles at \(A \left( \frac{x+y}{2}\right)\) are equal.  Since \(A\) is linear
+	and \(Ax \neq Ay\), \(A \left(\frac{x+y}{2}\right)\) lies on the vector
+	\(A(x-y)\).  Thus, the angles at \(A \left( \frac{x+y}{2}\right)\) are both
+	right.  However, this is a contradiction since \(\left\lVert
+	A\left(\frac{x+y}{2}\right) - b \right\lVert = \left\lVert Ax-b
+	\right\lVert = \left\lVert Ay-b \right\lVert\) implies that the hypotenuse of
+	a right triangle has the same length as one of its legs.  Hence, \(x-y\in
+	\operatorname{null} A\)
+\end{proof}
+
+\begin{problem}
+State and prove the Rank-Nullity Theorem.
+\end{problem}
+
+\begin{theorem}\label{thm:rank_nullity}
+	Let \(V, W\) be vector spaces with \(V\) finite-dimensional.  Let \(T\in
+	\mathcal{L}(V,W)\).  Then
+	\[
+		\dim V = \dim (\operatorname{range} T) + \dim (\operatorname{null} T)
+		.\]
+\end{theorem}
+\begin{proof}
+	Let \(u_1, u_2, \ldots, u_n\) form a basis for \(\operatorname{null} T\).
+	\(u_1, \ldots, u_n\) can be extended to form the following basis for \(V\):
+	\[
+		u_1, u_2, \ldots, u_n, v_1, v_2, \ldots, v_m
+		.\]
+	Now, we can form a spanning set for \(\operatorname{range} T\) by applying
+	\(T\) to each of the basis vectors above.  Thus,
+	\[
+		Tu_1, Tu_2, \ldots, Tu_n, Tv_1, Tv_2, \ldots, Tv_m
+	\]
+	spans \(\operatorname{range} T\).  Since \(u_1, \ldots, u_n\in
+	\operatorname{null} T\), the span of this set is equivalent to
+	\(\operatorname{span}(Tv_1, \ldots, Tv_m)\).  Next, we want to shaw that
+	\(Tv_1, \ldots, Tv_m\) are linearly independent.  Suppose that \(a_1, \ldots,
+	a_m\in \mathbb{F}\) are such that \(0 = a_1 Tv_1 + \cdots + a_m Tv_m\).  By
+	the linearity of \(T\), we see that
+	\[
+		0 = a_1 Tv_1 + \cdots + a_m Tv_m = T (a_1v_1 + \cdots + a_mv_m)
+		.\]
+	Thus, \(a_1v_1 + \cdots + a_mv_m \in \operatorname{null} T\). As \(u_1,
+	\ldots, u_n\) is a basis for \(\operatorname{null} T\), there exist \(b_1,
+	\ldots, b_n\in \mathbb{F}\) such that
+	\[
+		a_1v_1 + \cdots + a_mv_m = b_1u_1 + \cdots + b_nu_n
+		.\]
+	Because \(u_1, \ldots, u_n, v_1, \ldots, v_m\) are linearly indpendent, it
+	follows that \(a_1 = \cdots = a_m = b_1 = \cdots = b_n = 0\).  Therefore,
+	\(Tv_1, \ldots, Tv_m\) is a basis for \(\operatorname{range} T\), and
+	\[
+		\dim V = \dim (\operatorname{range} T) + \dim (\operatorname{null} T) = n + m
+		.\]
+\end{proof}
+
+\begin{problem}
+Let \(V, W\) be finite-dimensional vector spaces and \(T:V\to W\) be a linear
+transformation.  Define the transpose of \(T\) and prove the following
+\begin{enumerate}
+	\item \((\operatorname{range} T)^{\circ} = \operatorname{null} T'\),
+	\item \(\operatorname{rank} T = \operatorname{rank} T'\).
+\end{enumerate}
+\end{problem}
+\begin{proof}
+	The transpose \(T\) is the linear map \(T': W'\to V'\) defined by \(T'(f)
+	= f\circ T\).
+
+	\begin{enumerate}
+		\item Suppose \(f\in (\operatorname{range} T)^{\circ}\subseteq W'\).  Then,
+		      for each \(v\in V\), \((f\circ T) v = 0\).  We know that \(T'(f) = f\circ
+		      T\), so \(T'(f)(v) = (f\circ T) v = 0\) for each \(v\in V\).  Hence,
+		      \(f\in \operatorname{null}(T')\).
+
+		      Conversely, suppose \(f\in \operatorname{null} T'\).  Then, for each
+		      \(v\in V\), \(T'(f)(v) = (f\circ T) v = 0\).  It follows that \(f\in
+		      (\operatorname{range} T)^{\circ}\).
+		\item We begin by proving the following lemma regarding dual bases.
+
+		      \begin{lemma}\label{lem:dual_basis_is_basis}
+			      Let \(V\) be a finite-dimensional vector space.  If \(v_1, \ldots,
+			      v_n\) form a basis for \(V\), then the dual basis \(f_1, \ldots, f_n\)
+			      form a basis for \(V'\).  Note that we define \(f_i\) as follows:
+			      \[
+				      f_i\colon V\to F,\;f_i(v) = c_i \text{ if } v = c_1v_1 + \cdots + c_nv_n
+				      ,\]
+			      where \(n\coloneqq \dim V\).
+		      \end{lemma}
+		      \begin{proof}
+			      First, we shall show that each \(f_i\) is in \(V'\), i.e. that
+			      \(f_i\) is linear.  Let \(x,y\in V\) be given by \(x = a_1v_1 +
+			      \cdots + a_nv_n\) and \(y = b_1v_1 + \cdots + b_nv_n\) where the
+			      \(a_i\)'s and \(b_i\)'s are scalars.  Let \(c\in \mathbb{F}\).
+			      Then
+			      \begin{align*}
+				      f_i(x+cy) & = f_i \left[(a_1+cb_1)v_1 + \cdots + (a_n+cb_n)v_n \right] \\
+				                & = (a_i+cb_i)                                               \\
+				                & = f_i \left(x\right) + c f_i(y)
+				      .\end{align*}
+
+			      Now, let us show that \(f_1, \ldots, f_n\) are linearly indpendent.
+			      Suppose \(c_1, \ldots, c_n\in \mathbb{F}\) are such that
+			      \[
+				      0 = c_1f_1 + \cdots + c_nf_n
+				      .\]
+			      If we apply \(v_i\) to the functional above for \(1\leq i\leq
+			      n\), we obtain \(0 = c_i\).  Thus, \(f_1, \ldots, f_n\) are
+			      linearly independent.
+
+			      Finally, we show that \(f_1, \ldots, f_n\) span \(V'\).  Let \(f\in
+			      V'\) be an arbitrary linear functional.  If \(v = c_1v_1 + \cdots +
+			      c_nv_n\) for some scalars \(c_1, \ldots, c_n\), then
+			      \begin{align*}
+				      f(v) & = c_1 f(v_1) + \cdots + c_n f(v_n)                 \\
+				           & = f(v_1)f_1(v_1) + \cdots + f(v_n)f_n(v_n)         \\
+				           & = \left[f(v_1) f_1 + \cdots + f(v_n) f_n\right](v)
+				      .\end{align*}
+			      Therefore, \(f\in \operatorname{span}(f_1, \ldots, f_n)\), and
+			      \(f_1, \ldots, f_n\) form a basis for \(V'\).
+		      \end{proof}
+
+		      \begin{lemma}\label{lem:dim_annihilator}
+			      Suppose \(V\) is finite-dimensional and \(U\) is a subspace of
+			      \(V\).  Then,
+			      \[
+				      \dim V = \dim U + \dim U^{\circ}
+			      \]
+		      \end{lemma}
+		      \begin{proof}
+			      Let \(i\colon U\to V\) be the inclusion map defined by \(i(u) = u\)
+			      if \(u\in U\).  Applying the Rank-Nullity Theorem to \(i'\), we see
+			      that
+			      \[
+				      \dim V' = \dim (\operatorname{range} i') + \dim (\operatorname{null} i')
+				      .\]
+			      By Lemma~\ref{lem:dual_basis_is_basis}, \(\dim V = \dim V'\).
+			      Also, it's clear that \(\operatorname{null} i' = U^{\circ}\) from
+			      the various definitions.  So, it remains to show that \(\dim U =
+			      \dim(\operatorname{range} i')\). If \(f\in U'\), then \(f\) can be
+			      extended to a linear functional \(\varphi\in V'\).  By the
+			      defintion of \(i'\), \(i'(\varphi) = f\).  Therefore, \(f\in
+			      \operatorname{range} i'\).  Because \(i'\in \mathcal{L}(V',U')\),
+			      it follows from what we have just shown that \(U' =
+			      \operatorname{range}\).  Thus,
+			      \[
+				      \dim U + \dim U^{\circ} = \dim V
+				      .\]
+		      \end{proof}
+
+		      By Lemma~\ref{lem:dim_annihilator},
+		      \[
+			      \dim W = \dim (\operatorname{range} T) + \dim (\operatorname{range} T)^{\circ}
+			      ,\]
+		      and by the Rank-Nullity Theorem
+		      \[
+			      \dim W' = \dim (\operatorname{range} T') + \dim (\operatorname{null} T')
+			      .\]
+		      By Lemma~\ref{lem:dual_basis_is_basis}, \(\dim W = \dim W'\), whence
+		      \[
+			      \dim (\operatorname{range} T) + \dim (\operatorname{range} T)^{\circ} = \dim (\operatorname{range} T') + \dim (\operatorname{null} T')
+			      .\]
+		      If \(f\in (\operatorname{range} T)^{\circ}\), then \((f\circ T)(v) =
+		      0\) for each \(v\in V\).  Then \(T'(f)(v) = 0\), and \(f\in
+		      \operatorname{null} T'\).  On the other hand, if \(f\in
+		      \operatorname{null} T'\), then
+		      \[
+			      T'(f)(v) = (f\circ T)(v) = 0
+			      ,\]
+		      for each \(v\in V\).  Thus, \(f\in (\operatorname{range}
+		      T)^{\circ}\), and \((\operatorname{range} T)^{\circ} =
+		      \operatorname{null} T'\).  So, \(\dim (\operatorname{range} T)^{\circ} =
+		      \dim \operatorname{null} T'\).  It follows that
+		      \[
+			      \dim (\operatorname{range} T) = \dim (\operatorname{range} T')
+			      .\qedhere\]
+	\end{enumerate}
+\end{proof}
+
+\begin{problem}
+Let \(V\) be a complex vector space and let \(T\colon V\to V\) be a linear
+map. Let \(v_1, \ldots, v_n\) be non-zero vectors in \(V\), each an eigenvector for a
+different eigenvalue. Prove that \(v_1, \ldots, v_n\) are linearly independent.
+\end{problem}
+\begin{proof}
+	We proceed by induction on \(n\).  For \(n=1\), \(v_1\) is clearly linearly
+	independent.  Now, suppose \(v_1, \ldots, v_{n-1}\) are linearly independent.  We shall show that \(v_1, \ldots, v_{n}\) are linearly independent.  Let \(c_1, \ldots, c_n\in \mathbb{C}\) be such that
+	\[
+		0 = c_1v_1 + c_2v_2 + \cdots + c_nv_n
+		.\]
+	Then,
+	\[
+		0 = T(c_1v_1 + \cdots + c_nv_n) = c_1\lambda_1v_1 + \cdots + c_n\lambda_nv_n
+		.\]
+
+	\[
+		0 = (1-\lambda_1)c_1v_1 + \cdots + (1-\lambda_n)c_nv_n
+	\]
+\end{proof}
+
+\end{document}
